@@ -1,0 +1,53 @@
+
+
+
+<form #f="ngForm" (ngSubmit)="onSubmit(f)">
+      <div class="container-fluid">
+            <div class="row">
+                  <div class="col-sm-1"><button  type="submit" class="btn btn-primary" value="Compile">Compile</button></div>
+                  <div class="col-sm-11"><input type="text" class="form-control" id="ModelName" [(ngModel)]="compilation.ModelName" name="ModelName"></div>
+            </div>
+          
+      </div>
+
+
+      <div class="panel-container"> 
+            <div class="panel-left"> 
+                  <textarea   class="form-control" id="CompileFrom" 
+                  [(ngModel)]="compilation.CompileFrom" name="CompileFrom"></textarea>
+            </div> 
+            <div class="splitter">  </div> 
+            <div class="panel-right"> 
+                  
+            <div> 
+                  <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#wrap" aria-controls="wrap" role="tab" data-toggle="tab">Wrap</a></li>
+                        <li role="presentation"><a href="#remove" aria-controls="remove" role="tab" data-toggle="tab">Replace</a></li> 
+                  </ul> 
+                  <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="wrap">
+                              <textarea (keyup)="OnKeyUp(f)"  class="form-control sm" id="formula" 
+                              [(ngModel)]="formula" name="formula">Wrap</textarea>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="remove">
+                              <textarea (keyup)="OnKeyUp(f)"  class="form-control sm" id="replace" 
+                              [(ngModel)]="replace" name="replace">Replace</textarea>
+                        </div> 
+                  </div> 
+            </div>
+
+            
+                  <textarea  class="form-control" id="CompileTo" 
+                  [(ngModel)]="compilation.CompileTo" name="CompileTo"></textarea>
+            </div>
+      </div>
+      <textarea  class="form-control" id="cache"  name="cache" [(ngModel)]="cache"></textarea>
+    <div *ngIf="compilation.AppModel" app-model [appModel]="compilation.AppModel"></div> 
+ 
+    
+      {{  compilation.AppModel | json }}
+ 
+
+</form>
+
+ 

@@ -1,0 +1,41 @@
+export class {{appModel.Name}}&#123;<br>
+      constructor(<br>
+            <span class="indent" *ngFor="let item of appModel.AppModelItems" >
+                  <span  [ngSwitch]="item.DataType">
+                        <span *ngSwitchCase="'uniqueidentifier'">
+                              public {{item.Name}}?:number, 
+                        </span> 
+                        <span *ngSwitchCase="'int'">
+                              public {{item.Name}}?:number, 
+                        </span>                         
+                        <span *ngSwitchDefault>
+                              public {{item.Name}}?:string,
+                        </span>
+                  </span>
+                  <br>
+            </span>   
+      )&#123;&#125;  
+<br> &#125; <br>
+
+export interface I{{appModel.Name}}&#123;<br>
+     
+      <span  class="indent" *ngFor="let item of appModel.AppModelItems" >
+            <span  [ngSwitch]="item.DataType">
+                  <span *ngSwitchCase="'uniqueidentifier'">
+                        public {{item.Name}}?:number; 
+                  </span> 
+                  <span *ngSwitchCase="'int'">
+                        public {{item.Name}}?:number; 
+                  </span>                         
+                  <span *ngSwitchDefault>
+                        public {{item.Name}}?:string;
+                  </span>
+            </span>
+            <br>
+      </span>   
+  
+<br> &#125; <br>
+  
+                           
+     
+<br><br><br><br>
