@@ -3,7 +3,8 @@ import { NgForm } from '@angular/forms';
 import { HttpHeaders, HttpClient } from '@angular/common/http';  
 import { Compilation, ICompilation } from '../../models/Compilation';
 import { AppModel, AppModelItem } from '../../models/AppModel';
-
+import {InfoSchemaService } from '../../services/info-schema.service';
+import { stringify } from 'querystring';
 @Component({
   selector: 'app-compiler',
   templateUrl: './compiler.component.html',
@@ -16,10 +17,13 @@ export class CompilerComponent implements OnInit {
   public cache: string; 
   public formula: string; 
   public replace: string;
-  
-  constructor(private http: HttpClient) { 
+  public resultItems:string[] = []; 
+  public commands : string[] = ['get:tables','get:model', 'wrap', 'replace']; 
+  constructor(private http: HttpClient
+    , private _InfoSchemaService: InfoSchemaService) { 
     this.compilation.ModelName='aspnet_Membership'; 
     this.compilation.CompileFrom='';  
+    this.compilation.CommandParams='';
   } 
   ngOnInit(): void {  
     $(".panel-left").resizable({
@@ -27,7 +31,7 @@ export class CompilerComponent implements OnInit {
       resizeHeight: false
     });
   }
-  OnKeyUp(form: NgForm){
+  OnKeyUp(form: NgForm){ 
     this.compilation.CompileTo='';
     let lines = this.compilation.CompileFrom.split('\n');
     let compileTo = ''; 
@@ -36,7 +40,20 @@ export class CompilerComponent implements OnInit {
     } 
     this.compilation.CompileTo=compileTo;
   } 
-  onSubmit(form: NgForm){    
+  CompileFromUpdate(){
+    this.compilation.CompileFrom=this.compilation.CompileFrom.toString().split(',').join( '\n') ;
+  }
+  onSubmit(form: NgForm){  
+   
+    if(this.compilation.Command=='get:tables'){
+        this._InfoSchemaService.GetTables('asp').subscribe(data => {  
+          this.compilation.CompileFrom=data;  
+          this.CompileFromUpdate();
+        }); 
+    }  
+    
+
+    return true;
         this.http
         .post<ICompilation>('http://localhost:4000/api/Compilation/', this.compilation)
         .subscribe(data  => {   

@@ -4,8 +4,16 @@
 <form #f="ngForm" (ngSubmit)="onSubmit(f)">
       <div class="container-fluid">
             <div class="row">
-                  <div class="col-sm-1"><button  type="submit" class="btn btn-primary" value="Compile">Compile</button></div>
-                  <div class="col-sm-11"><input type="text" class="form-control" id="ModelName" [(ngModel)]="compilation.ModelName" name="ModelName"></div>
+                  <div class="col-sm-2"><button  type="submit" class="btn btn-primary" value="Execute">Execute</button></div>
+                  <div class="col-sm-2">
+                        <select name="command" id="command" [(ngModel)]="compilation.Command"  >
+                              <option value="0">--</option>
+                              <option *ngFor="let command of commands" value={{command}}>
+                                {{command}}
+                              </option>
+                        </select>
+                  </div>
+                  <div class="col-sm-8"><input type="text" class="form-control" id="CommandParams" [(ngModel)]="compilation.CommandParams" name="CommandParams"></div>
             </div>
           
       </div>

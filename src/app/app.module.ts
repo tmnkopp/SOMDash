@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { CompilerComponent } from './components/compiler/compiler.component';
 import { AppModelComponent } from './components/app-model/app-model.component';
 import { FindComponent } from './components/find/find.component';
+import { ConstantsService } from './services/constants.service';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,7 @@ import { FindComponent } from './components/find/find.component';
     AppRoutingModule ,
     FormsModule
   ],
-  providers: [],
+  providers: [ConstantsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -57,6 +57,12 @@ body {
       border: 0px;
       padding: 1rem;
     }
+    select{
+      padding: .5rem;
+      option{
+        font-family: 'Montserrat' ;  
+      }
+    }
     input[type='checkbox']{
       width:4px;
       margin:0px 6px ;
