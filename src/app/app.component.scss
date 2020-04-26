@@ -1,0 +1,19 @@
+.wrapper {
+      display: flex;
+      width: 100%;
+      align-items: stretch;
+      padding:0px;
+  } 
+  .wrapper .row{
+      width: 100vw;
+  }
+  #sidebar {
+      min-width: 250px;
+      max-width: 250px;
+      min-height: 100vh;
+      background-color:#000 ;
+  }
+  
+  #sidebar.active {
+      margin-left: -250px;
+  }

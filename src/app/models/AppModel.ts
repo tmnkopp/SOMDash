@@ -1,7 +1,7 @@
 export class AppModel{
       constructor(
             public AppModelId?:number, 
-            public Name?:string,
+            public ModelName?:string,
             public AppModelItems?:AppModelItem[]
       ){}
 }//export class

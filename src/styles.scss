@@ -1,11 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 
 body {
-      padding-top: 15px;
+      padding-top: 0px;
       padding-bottom: 20px;
       background: #323232;
-      font-family: 'Montserrat', Source Code Pro;
-      font-size: 14.5px;
+      font-family: 'PT Mono', monospace;
+      font-size: 11.5px; 
+      letter-spacing:1.25px;
       color: #f4f4f4;
     }
     .green{ color: #41FF00; }
@@ -24,23 +25,24 @@ body {
       color: #ff4500;
     } 
     a:hover {
-      color: #323232;
-      background: #ff4500;
+      color: #f4f4f4;
+      background: #6c6c6c;
+      text-decoration: none;
     }
     .nav-tabs{ 
       border:0px;
       li{ 
-        border:0px solid #6c6c6c;
+        border:1px solid #6c6c6c;border-bottom:0px; 
       }
-      li a.active{
+      li.active, li a.active{
         background: #6c6c6c;
         color: #f4f4f4;
       }
-      a{ 
-        border:1px solid #6c6c6c;
-        border-bottom:0px;
-        color: #f4f4f4;
+      a{   
         padding:.34em 2em 0em 2em;
+        color: #f4f4f4;
+        font-size:11px;
+        
       }
     }
     input,
@@ -50,18 +52,16 @@ body {
       max-width: 100%;
       border-radius: 0px;
       margin-bottom: 1rem;
-      font-size: 1rem;
+      font-size: 11px;
       width: 100%;
       background: #6c6c6c;
       color: #f4f4f4;
       border: 0px;
       padding: 1rem;
+      letter-spacing:2px;
     }
     select{
-      padding: .5rem;
-      option{
-        font-family: 'Montserrat' ;  
-      }
+      padding: .5rem; 
     }
     input[type='checkbox']{
       width:4px;
@@ -95,8 +95,11 @@ body {
       background: #ff4500;
       border: 0px solid #d3d3d3;
       color: #323232;
+      cursor:pointer;
     }
-    
+    nav ul{
+      list-style-type: none;
+    }
     .nav li {
       display: inline-block;
       padding: 0em .25em;

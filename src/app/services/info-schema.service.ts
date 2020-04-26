@@ -17,5 +17,9 @@ export class InfoSchemaService {
     } 
     public GetTables (filter: string): any {   
       return  this._http.get<string[]>( `${this.baseApiUrl}Compilation/Tables/${filter}` )  ; 
-  } 
+    } 
+    public GetModel (model: string): any {   
+      return  this._http.get<AppModel>( `${this.baseApiUrl}Compilation/Model/${model}` )  ; 
+    }     
+
 }

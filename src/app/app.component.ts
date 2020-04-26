@@ -10,7 +10,11 @@ import { Component, OnInit } from '@angular/core';
 export class AppComponent implements OnInit  {
   title = 'somuing';
   ngOnInit(){
-  
+    $('#sidebar').addClass('active');
+    $('#sidebarCollapse').on('click', function () {
+      $('#sidebar').toggleClass('active');
+    });
   } 
 }
 
+declare var $: any;

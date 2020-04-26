@@ -1,12 +1,19 @@
-<div class='container-fluid'>
+<div class='container-fluid  wrapper '> 
+
+      <nav id="sidebar">
+        <ul>
+          <li>        <a [routerLink]="['/']">[home]</a> &nbsp;</li>
+          <li>        <a [routerLink]="['/compiler']">[compile]</a> &nbsp;</li>
+          <li>        <a [routerLink]="['/find']">[find]</a> &nbsp; </li>
+        </ul>
+      </nav>  
+   
   <div class='row'>
-    <div class='col-sm-12'>
-      <a [routerLink]="['/']">[home]</a> &nbsp;
-      <a [routerLink]="['/compiler']">[compile]</a> &nbsp;
-      <a [routerLink]="['/find']">[find]</a> &nbsp; 
-    </div>
-    <div class='col-sm-12 body-content'>
+    <div class='col-sm-12 body-content'>  
+      <span style="cursor:pointer;" id="sidebarCollapse"><</span>
+
       <router-outlet></router-outlet>
     </div>
+
   </div>
 </div>
