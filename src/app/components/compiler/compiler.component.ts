@@ -5,6 +5,7 @@ import { Compilation, ICompilation } from '../../models/Compilation';
 import { AppModel, AppModelItem } from '../../models/AppModel';
 import { InfoSchemaService } from '../../services/info-schema.service';
 import { CompilationService } from '../../services/compilation.service';
+import { CompilersService } from '../../services/compilers.service';
 
 import { stringify } from 'querystring';
 @Component({
@@ -26,7 +27,7 @@ export class CompilerComponent implements OnInit {
     constructor(
         private http: HttpClient , 
         private _InfoSchemaService: InfoSchemaService,    
-        private _CompilationService: CompilationService   ) 
+        private _CompilationService: CompilationService ) 
     { 
         this.compilation.Command ='get:model'; 
         this.formula='$0'; 
@@ -42,10 +43,11 @@ export class CompilerComponent implements OnInit {
         $(".panel-left").resizable({
             handleSelector: ".splitter",  resizeHeight: false
         });  
-        this._CompilationService.GetAll().subscribe(data=>{  
-          
+        this._CompilationService.GetAll().subscribe(data=>{   
             this.complist=data
         }); 
+
+
     }
 
     DoWrap(form: NgForm){ 
