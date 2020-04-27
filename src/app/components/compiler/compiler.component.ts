@@ -5,7 +5,7 @@ import { Compilation, ICompilation } from '../../models/Compilation';
 import { AppModel, AppModelItem } from '../../models/AppModel';
 import { InfoSchemaService } from '../../services/info-schema.service';
 import { CompilationService } from '../../services/compilation.service';
-import { CompilersService } from '../../services/compilers.service';
+import { CompilersService, FormulaCompile, ReplacementsCompile, LineParseCompile, ICompiler } from '../../services/compilers.service';
 
 import { stringify } from 'querystring';
 @Component({
@@ -19,6 +19,7 @@ export class CompilerComponent implements OnInit {
     public compilation: Compilation = new Compilation(); 
     public cache: string; 
     public formula: string; 
+    public lineParse:string;
     public replacements: string;
     public resultItems:string[] = []; 
     public commands : string[] = [ 'get:tables', 'get:model', 'load:compilation', 'put:save', 'post:saveas' ]; 
@@ -27,80 +28,58 @@ export class CompilerComponent implements OnInit {
     constructor(
         private http: HttpClient , 
         private _InfoSchemaService: InfoSchemaService,    
-        private _CompilationService: CompilationService ) 
+        private _CompilationService: CompilationService , 
+        private _CompilersService: CompilersService  ) 
     { 
         this.compilation.Command ='get:model'; 
-        this.formula='$0'; 
-        this.compilation.CommandParams='SOMAPI.Models.CompilerViewModel'; 
-        this.compilation.CompileFrom=''; 
+        this.formula='$0';  
+        this.compilation.CommandParams='SOMAPI.Models.CompilerViewModel';  
         this.compilation.AppModel = new AppModel(); 
         this.compilation.AppModel.AppModelItems = [];
         this.replacements='\\n:\\n';
 
-    } 
-
+    }  
     ngOnInit(): void {  
         $(".panel-left").resizable({
             handleSelector: ".splitter",  resizeHeight: false
         });  
         this._CompilationService.GetAll().subscribe(data=>{   
             this.complist=data
-        }); 
-
-
+        });  
     }
-    CompileForm(form: NgForm){
-        this.compilation.CompileTo='';
-        let content = ''; 
+
+
+    ReCompile(form: NgForm){ 
+        let content = this.compilation.CompileFrom; 
+        let compiler: ICompiler; 
+        compiler = new FormulaCompile( this.formula );
+            content = compiler.compile(content); 
+        compiler = new ReplacementsCompile( this.replacements );
+            content = compiler.compile(content); 
+        
+        content = this.DoLineParse(content); 
+
         this.compilation.CompileTo=content;
     }
-    DoWrap(form: NgForm){ 
-        this.compilation.CompileTo='';
-        let lines = this.compilation.CompileFrom.split('\n');
-        let compileTo = ''; 
 
-        for (var i = 0; i < lines.length; i++) {   
-            compileTo += `${this.formula.replace(/\$0/g,lines[i])}\n` 
-
-            let RegExMatch = compileTo.match(/\$I\+\d*/);
-            if(RegExMatch!= null){
-                let match=RegExMatch[RegExMatch.length-1];
-                let increment = +match.split('+')[1]; 
-                compileTo = `${compileTo.replace (match, (i + increment).toString() )}`; 
-            }        
-
-            RegExMatch = compileTo.match(/\$M\d*/);
-            if(RegExMatch!= null){
-                let match=RegExMatch[RegExMatch.length-1];
-                let mod = +match.replace('$M', ''); 
-                if(((i+1) % mod)==0){
-                    compileTo = `${compileTo.replace(match, 'MOD'+ (i % mod).toString() )}`; 
-                }else{
-                    compileTo = `${compileTo.replace(match, '' )}`;    
+    DoLineParse(content: string) : string {
+        let compiler: ICompiler; 
+        if(this.lineParse){
+            let parseLines =  this.lineParse.split('\n') ;  
+            for (let index = 0; index < parseLines.length; index++) {
+                let element = parseLines[index];
+                if(element.split(':').length >= 2)
+                { 
+                    let parseType = element.split(':')[0];
+                    let RegEx = element.split(':')[1] ;   
+                    compiler = new LineParseCompile(RegEx, (parseType=='+'));
+                    content = compiler.compile(content); 
                 }
-            } 
-
+            }
         } 
-        this.compilation.CompileTo=compileTo;
-    } 
-
-    DoReplace(form: NgForm){    
-        this.DoWrap(form);
-        let lines = this.replacements.split('\n');
-        let compileTo = this.compilation.CompileTo;
-        for (var i = 0; i < lines.length; i++) {  
-            if(lines[i].split(':').length >= 2){
-                let replaceItem = lines[i].split(':')[0].replace(/\\n/g,'\n');
-                let replaceWith = lines[i].split(':')[1]
-                    .replace(/\\n/g,'\n')
-                    .replace('\\b','')
-                    .replace('\\t','\t'); 
-                compileTo = compileTo.split(replaceItem).join(replaceWith);
-            }  
-        } 
-        this.compilation.CompileTo=compileTo; 
-    }  
-  
+        return content; 
+    }
+      
   onSubmit(form: NgForm){   
     if(this.compilation.Command=='get:tables'){
         this.compilation.CompileFrom='';
@@ -124,8 +103,7 @@ export class CompilerComponent implements OnInit {
         this._CompilationService.Get(id).subscribe(data => {  
             this.compilation=data;   
         }); 
-    } 
-
+    }  
     if(this.compilation.Command=='post:saveas'){
         this._CompilationService.SaveAs(this.compilation).subscribe(data => {  
             this.compilation=data;   
@@ -140,4 +118,3 @@ export class CompilerComponent implements OnInit {
   } 
 }
 declare var $: any;
- 

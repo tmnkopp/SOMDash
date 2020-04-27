@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { CompilersService } from './services/compilers.service';
+import { Component, OnInit } from '@angular/core'; 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -8,14 +7,10 @@ import { CompilersService } from './services/compilers.service';
  
 export class AppComponent implements OnInit  {
   title = 'somuing'; 
-  constructor( private _CompilersService: CompilersService ) { }
+  constructor( ) { }
  
   ngOnInit(){
-
-    let str = this._CompilersService.getStr(' hello ');
-    console.log(  str  );
-
-
+ 
     $('#sidebar').addClass('active');
     $('#sidebarCollapse').on('click', function () {
       $('#sidebar').toggleClass('active');
