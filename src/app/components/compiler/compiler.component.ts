@@ -49,7 +49,11 @@ export class CompilerComponent implements OnInit {
 
 
     }
-
+    CompileForm(form: NgForm){
+        this.compilation.CompileTo='';
+        let content = ''; 
+        this.compilation.CompileTo=content;
+    }
     DoWrap(form: NgForm){ 
         this.compilation.CompileTo='';
         let lines = this.compilation.CompileFrom.split('\n');
