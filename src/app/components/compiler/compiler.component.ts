@@ -34,8 +34,12 @@ export class CompilerComponent implements OnInit {
         this.compilation.Command ='get:model'; 
         this.formula='$0';  
         this.compilation.CommandParams='SOMAPI.Models.CompilerViewModel';  
-        this.compilation.AppModel = new AppModel(); 
-        this.compilation.AppModel.AppModelItems = [];
+        this.compilation.AppModel = new AppModel();  
+        this.compilation.AppModel.AppModelItems = [ 
+            new AppModelItem( 1,'ID', 'int'  ) ,
+            new AppModelItem( 2,'Field2', 'string'  ) ,
+            new AppModelItem( 3,'Field3', 'string'  ) 
+        ];
         this.replacements='\\n:\\n';
 
     }  
@@ -68,13 +72,15 @@ export class CompilerComponent implements OnInit {
             let parseLines =  this.lineParse.split('\n') ;  
             for (let index = 0; index < parseLines.length; index++) {
                 let element = parseLines[index];
+                let parseType = '+';
+                let RegEx = element;  
                 if(element.split(':').length >= 2)
                 { 
-                    let parseType = element.split(':')[0];
-                    let RegEx = element.split(':')[1] ;   
-                    compiler = new LineParseCompile(RegEx, (parseType=='+'));
-                    content = compiler.compile(content); 
+                    parseType = element.split(':')[0];
+                    RegEx = element.split(':')[1] ;      
                 }
+                compiler = new LineParseCompile(RegEx, (parseType=='+'));
+                content = compiler.compile(content); 
             }
         } 
         return content; 

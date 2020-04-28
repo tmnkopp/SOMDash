@@ -26,7 +26,7 @@
       </div>
 
 
-      <div class="panel-container"> 
+      <div class="panel-container" style="overflow:auto"> 
             <div class="panel-left"> 
                 <input type="text" class="form-control" id="CommandParams" [(ngModel)]="compilation.CommandParams" name="CommandParams">
                   <textarea   class="form-control" id="CompileFrom" 
@@ -74,14 +74,11 @@
             </div>  
             </div>
       </div>
-      
+
       <textarea  class="form-control" id="cache"  name="cache" [(ngModel)]="cache"></textarea>
       
- 
-    
       {{  compilation.AppModel | json }}
- 
-
+        
 </form>
 
  
