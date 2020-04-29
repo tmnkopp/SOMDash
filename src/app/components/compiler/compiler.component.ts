@@ -15,24 +15,21 @@ import { stringify } from 'querystring';
 })
 
 export class CompilerComponent implements OnInit {
- 
+    
     public compilation: Compilation = new Compilation(); 
-    public cache: string; 
-    public formula: string; 
-    public lineParse:string;
-    public replacements: string;
+    public cache: string;   
     public resultItems:string[] = []; 
     public commands : string[] = [ 'get:tables', 'get:model', 'load:compilation', 'put:save', 'post:saveas' ]; 
     public complist: ICompilation[]= [] ;
-     public compSelected : string='';
+    public compSelected : string='';
+    
     constructor(
         private http: HttpClient , 
         private _InfoSchemaService: InfoSchemaService,    
         private _CompilationService: CompilationService , 
         private _CompilersService: CompilersService  ) 
     { 
-        this.compilation.Command ='get:model'; 
-        this.formula='$0';  
+        this.compilation.Command ='get:model';   
         this.compilation.CommandParams='SOMAPI.Models.CompilerViewModel';  
         this.compilation.AppModel = new AppModel();  
         this.compilation.AppModel.AppModelItems = [ 
@@ -40,7 +37,8 @@ export class CompilerComponent implements OnInit {
             new AppModelItem( 2,'Field2', 'string'  ) ,
             new AppModelItem( 3,'Field3', 'string'  ) 
         ];
-        this.replacements='\\n:\\n';
+        this.compilation.ReplaceTerms='\\n:\\n';
+        this.compilation.WrapExpression='$0';
 
     }  
     ngOnInit(): void {  
@@ -56,20 +54,20 @@ export class CompilerComponent implements OnInit {
     ReCompile(form: NgForm){ 
         let content = this.compilation.CompileFrom; 
         let compiler: ICompiler; 
-        compiler = new FormulaCompile( this.formula );
+        compiler = new FormulaCompile( this.compilation.WrapExpression );
             content = compiler.compile(content); 
-        compiler = new ReplacementsCompile( this.replacements );
+        compiler = new ReplacementsCompile( this.compilation.ReplaceTerms );
             content = compiler.compile(content); 
         
         content = this.DoLineParse(content); 
 
         this.compilation.CompileTo=content;
     }
-
+//
     DoLineParse(content: string) : string {
         let compiler: ICompiler; 
-        if(this.lineParse){
-            let parseLines =  this.lineParse.split('\n') ;  
+        if(this.compilation.ParseLines){
+            let parseLines =  this.compilation.ParseLines.split('\n') ;  
             for (let index = 0; index < parseLines.length; index++) {
                 let element = parseLines[index];
                 let parseType = '+';

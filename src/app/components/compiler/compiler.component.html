@@ -46,16 +46,16 @@
                     </ul> 
                   <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="wrap">
-                              <textarea (keyup)="ReCompile(f)"  class="form-control sm" id="formula" 
-                              [(ngModel)]="formula" name="formula"> </textarea>
-                        </div>
+                              <textarea (keyup)="ReCompile(f)"  class="form-control sm" id="WrapExpression" 
+                              [(ngModel)]="compilation.WrapExpression" name="WrapExpression"> </textarea>
+                        </div> 
                         <div role="tabpanel" class="tab-pane" id="remove">
-                              <textarea (blur)="ReCompile(f)"  class="form-control sm" id="replacements" 
-                              [(ngModel)]="replacements" name="replacements"> </textarea>
+                              <textarea (blur)="ReCompile(f)"  class="form-control sm" id="ReplaceTerms" 
+                              [(ngModel)]="compilation.ReplaceTerms" name="ReplaceTerms"> </textarea>
                         </div> 
                         <div role="tabpanel" class="tab-pane" id="lineParseTab">
-                            <textarea (blur)="ReCompile(f)"  class="form-control sm" id="lineParse" 
-                            [(ngModel)]="lineParse" name="lineParse"></textarea>
+                            <textarea (blur)="ReCompile(f)"  class="form-control sm" id="ParseLines" 
+                            [(ngModel)]="compilation.ParseLines" name="ParseLines"></textarea>
                       </div> 
                   </div>  
             </div>
