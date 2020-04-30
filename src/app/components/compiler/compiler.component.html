@@ -29,8 +29,19 @@
       <div class="panel-container" style="overflow:auto"> 
             <div class="panel-left"> 
                 <input type="text" class="form-control" id="CommandParams" [(ngModel)]="compilation.CommandParams" name="CommandParams">
-                  <textarea   class="form-control" id="CompileFrom" 
-                  [(ngModel)]="compilation.CompileFrom" name="CompileFrom"></textarea>
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#tab_CompileFrom" aria-controls="tab_CompileFrom" role="tab" data-toggle="tab">CompileFrom</a></li>
+                    <li role="presentation"><a href="#tab_List1" aria-controls="tab_List1" role="tab" data-toggle="tab">L1</a></li>  
+              </ul>
+              <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="tab_CompileFrom">
+                    <textarea   class="form-control" id="CompileFrom"   [(ngModel)]="compilation.CompileFrom" name="CompileFrom"></textarea>
+                </div> 
+                <div role="tabpanel" class="tab-pane" id="tab_List1">
+                    <textarea   class="form-control" id="CombineFrom"  [(ngModel)]="compilation.CombineFrom" name="CombineFrom"></textarea>
+                </div>  
+          </div>  
+        
 
                   
             </div> 
@@ -46,6 +57,8 @@
                     </ul> 
                   <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="wrap">
+                            Trim Whitespace: 
+                            <input type="checkbox" [(ngModel)]="TrimWhitespace" (change)="ReCompile(f)" name="TrimWhitespace" id="TrimWhitespace">   
                               <textarea (keyup)="ReCompile(f)"  class="form-control sm" id="WrapExpression" 
                               [(ngModel)]="compilation.WrapExpression" name="WrapExpression"> </textarea>
                         </div> 
@@ -61,21 +74,28 @@
             </div>
             <ul class="nav nav-tabs" role="tablist">
                   <li role="presentation" class="active"><a href="#tab_compileto" aria-controls="tab_compileto" role="tab" data-toggle="tab">CompiledTo</a></li>
-                  <li role="presentation"><a href="#tab_appmodels" aria-controls="remove" role="tab" data-toggle="tab">App Models</a></li> 
+                  <li role="presentation"><a href="#tab_appmodels" aria-controls="remove" role="tab" data-toggle="tab">snip</a></li> 
+                  <li role="presentation"><a href="#tab_sql" aria-controls="tab_sql" role="tab" data-toggle="tab">sql</a></li> 
+                  <li role="presentation"><a href="#tab_cache" aria-controls="tab_cache" role="tab" data-toggle="tab">cache</a></li> 
             </ul> 
             <div class="tab-content">
                   <div role="tabpanel" class="tab-pane active" id="tab_compileto">
-                        <textarea  class="form-control" id="CompileTo"   [(ngModel)]="compilation.CompileTo" name="CompileTo"></textarea>
-    
+                        <textarea  class="form-control" id="CompileTo"   [(ngModel)]="compilation.CompileTo" name="CompileTo"></textarea> 
                   </div>
                   <div role="tabpanel" class="tab-pane" id="tab_appmodels"> 
                         <div class="appmodels" *ngIf="compilation.AppModel" app-model [appModel]="compilation.AppModel"></div> 
                   </div> 
+                  <div role="tabpanel" class="tab-pane" id="tab_sql"> 
+                    <div class="sql" *ngIf="compilation.AppModel" app-sql [appModel]="compilation.AppModel"></div> 
+              </div>                   
+                  <div role="tabpanel" class="tab-pane" id="tab_cache"> 
+                    <textarea  class="form-control" id="cache"  name="cache" [(ngModel)]="cache"></textarea>
+                  </div>                   
             </div>  
             </div>
       </div>
 
-      <textarea  class="form-control" id="cache"  name="cache" [(ngModel)]="cache"></textarea>
+      
       
       {{  compilation.AppModel | json }}
         

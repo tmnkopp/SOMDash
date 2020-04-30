@@ -1,0 +1,135 @@
+<ul class="nav nav-tabs" role="tablist">
+
+  
+    <li role="presentation" ><a href="#sql_table" aria-controls="sql_table" role="tab" data-toggle="tab">sql_table</a></li> 
+    <li role="presentation" ><a href="#sql_exe" aria-controls="sql_exe" role="tab" data-toggle="tab">sql_exe</a></li> 
+    <li role="presentation" ><a href="#sql_loop" aria-controls="sql_loop" role="tab" data-toggle="tab">sql_loop</a></li> 
+    <li role="presentation" ><a href="#sql_custom" aria-controls="sql_custom" role="tab" data-toggle="tab">custom</a></li>   
+</ul> 
+ <div class="tab-content app-model-tab-content">
+ 
+        <div role="tabpanel" class="tab-pane " id="sql_table"> 
+            DECLARE @TMPTBL TABLE(  
+            <span  *ngFor="let item of appModel.AppModelItems; let i = index; let c = count" >  
+                <br>{{item.Name}}  
+                <span  [ngSwitch]="item.DataType">
+                    <span *ngSwitchCase="'uniqueidentifier'">INT </span> 
+                    <span *ngSwitchCase="'int'">INT </span>       
+                    <span *ngSwitchCase="'date'">DATE </span>     
+                    <span *ngSwitchCase="'datetime'">DATE </span>                 
+                    <span *ngSwitchDefault>NVARCHAR(4000) </span>
+                </span> 
+                <span *ngIf="i < c-1;">,</span> 
+            </span> 
+            ); 
+            <br><br>
+            INSERT INTO  @TMPTBL(  
+                <span  *ngFor="let item of appModel.AppModelItems; let i = index; let c = count" >  
+                    <br>{{item.Name}} <span *ngIf="i < c-1;">,</span> 
+                </span>  
+            <br>)VALUES(<br>
+            <span  *ngFor="let item of appModel.AppModelItems; let i = index; let c = count" >   
+                <span  [ngSwitch]="item.DataType"> 
+                    <span *ngSwitchCase="'int'">@{{item.Name}} </span>       
+                    <span *ngSwitchCase="'date'">DATEADD(year, 1, @{{item.Name}}) </span>     
+                    <span *ngSwitchCase="'datetime'">DATEADD(year, 1, @{{item.Name}}) </span>                 
+                    <span *ngSwitchDefault>''+ '@{{item.Name}}' +'' </span>
+                </span> 
+                <span *ngIf="i < c-1;">, <br></span> 
+            </span> 
+            <br>);   
+            <br><br>
+            SELECT  
+                <span  *ngFor="let item of appModel.AppModelItems; let i = index; let c = count" >  
+                    <span *ngIf=" item.DataType == 'int' "> CONVERT( NVARCHAR(55) , {{item.Name}} ) [{{item.Name}}]  </span>
+                    <span *ngIf=" item.DataType != 'int' "> ISNULL( {{item.Name}} , '' ) [{{item.Name}}]  </span><span *ngIf="i < c-1;">,</span> 
+                </span>  
+            <br> FROM @TMPTBL
+            <br><br>
+ 
+            <br><br> 
+            <span  *ngFor="let item of appModel.AppModelItems; let i = index; let c = count" > 
+                <span  [ngSwitch]="item.DataType"> 
+                    <span *ngSwitchCase="'int'">DECLARE @{{item.Name}} INT=0 </span>       
+                    <span *ngSwitchCase="'date'">DECLARE @{{item.Name}} DATETIME= DATEADD(year, 0, GETDATE()) </span>     
+                    <span *ngSwitchCase="'datetime'">DECLARE @{{item.Name}} DATETIME= DATEADD(year, 0, GETDATE()) </span>                 
+                    <span *ngSwitchDefault>DECLARE @{{item.Name}} NVARCHAR(4000) = '' </span>
+                </span>  
+                <span *ngIf="i < c-1;"><br></span> 
+            </span> 
+
+
+        </div> 
+        <div role="tabpanel" class="tab-pane " id="sql_exe">
+ 
+            <br>DECLARE @exe NVARCHAR(MAX) = ''
+            <br>SET @exe = ' '  
+            <span  *ngFor="let item of appModel.AppModelItems; let i = index; let c = count" > 
+                <br> SET @exe = @exe + ' {{item.Name}}  '   
+            </span>  
+            <br>EXECUTE sp_executesql @exe
+        </div>
+        <div role="tabpanel" class="tab-pane " id="sql_loop"> 
+
+            <br>DECLARE @SRC NVARCHAR(55) = 'aspnet_Profile'             
+            <br>DECLARE @DICT TABLE (ROWNUM INT IDENTITY (1, 1) PRIMARY KEY NOT NULL , KY INT, VL NVARCHAR(4000))
+            <br>            
+            <br>DECLARE @RowCnt INT = 0   
+            <br>INSERT INTO @DICT (KY,VL)  
+            <br>SELECT ORDINAL_POSITION, COLUMN_NAME  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME=@SRC 
+            <br>DECLARE @MaxRows INT=(SELECT COUNT(*) FROM @DICT) 
+            <br>WHILE @RowCnt <= @MaxRows
+            <br>BEGIN
+            <br>    DECLARE @PKEY INT = (SELECT KY FROM @DICT WHERE ROWNUM = @RowCnt)  
+            <br>	DECLARE @VL NVARCHAR(4000) = (SELECT VL FROM @DICT WHERE ROWNUM = @RowCnt)  
+            <br>    PRINT @VL  
+            <br>    SELECT @RowCnt = @RowCnt + 1  
+            <br>END
+            <br>
+            <br> 
+            <br><br><br><br><br>
+            <br> 
+            <br>  DECLARE @SRC NVARCHAR(55) = 'aspnet_Users'
+            <br>  DECLARE @exe NVARCHAR(MAX) = ''  
+            <br>  IF OBJECT_ID('tempdb..#MTRX') IS NOT NULL DROP TABLE #MTRX 
+            <br>  CREATE TABLE #MTRX (ROWNUM INT IDENTITY (1, 1) PRIMARY KEY NOT NULL, KY INT, VL NVARCHAR(4000))
+            <br>  
+            <br>  DECLARE @RowCnt INT = 1
+            <br>  INSERT INTO #MTRX (KY,VL)
+            <br>  SELECT ORDINAL_POSITION, COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME=@SRC
+            <br>  DECLARE @MaxRows INT =(SELECT COUNT(*) FROM #MTRX)
+            <br>  WHILE @RowCnt <= @MaxRows
+            <br>  BEGIN
+            <br>  	DECLARE @PKEY INT = (SELECT KY FROM #MTRX WHERE ROWNUM = @RowCnt)
+            <br>  	DECLARE @VL NVARCHAR(4000) = (SELECT VL FROM #MTRX WHERE ROWNUM = @RowCnt)
+            <br>  	IF @RowCnt > 1 BEGIN
+            <br>  		SET @exe = @exe + ', '
+            <br>  	END
+            <br>  	SET @exe = @exe + Coalesce(@VL,'')
+            <br>  	SELECT @RowCnt = @RowCnt + 1  
+            <br>  END 
+            <br>  SET @exe = 'SELECT ' + @exe + ' FROM ' + @SRC
+            <br>  IF OBJECT_ID('tempdb..#MTRX') IS NOT NULL DROP TABLE #MTRX 
+            <br>  EXECUTE sp_executesql @exe
+            <br>    
+            <br><br><br><br><br>
+            
+        </div>
+        <div role="tabpanel" class="tab-pane " id="sql_custom"> 
+            <br>
+
+            <br>DECLARE @TABLENAME NVARCHAR(55) = 'aspnet_Profile'
+            <br>SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME =@TABLENAME
+            <br>
+            <br><br>
+ 
+            <br>
+            <br>
+
+<br><br>
+
+
+        </div> <!-- custom  -->
+</div> 
+ 
+<br><br><br><br>

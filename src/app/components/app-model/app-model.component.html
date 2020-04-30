@@ -3,6 +3,7 @@
     <li role="presentation" class="active"><a href="#csharp" aria-controls="csharp" role="tab" data-toggle="tab">csharp</a></li> 
     <li role="presentation" ><a href="#typescript" aria-controls="typescript" role="tab" data-toggle="tab">typescript</a></li> 
     <li role="presentation" ><a href="#formitems" aria-controls="formitems" role="tab" data-toggle="tab">formitems</a></li> 
+ 
     <li role="presentation" ><a href="#custom" aria-controls="custom" role="tab" data-toggle="tab">custom</a></li>   
 </ul> 
  <div class="tab-content app-model-tab-content">
@@ -81,45 +82,10 @@
                 <br>
             </span>     
       </div>
+       
+        <div role="tabpanel" class="tab-pane " id="custom"> 
 
-      <div role="tabpanel" class="tab-pane " id="custom"> 
-            <span  *ngFor="let item of appModel.AppModelItems" >  
-               ISNULL( {{item.Name}} , '') [{{item.Name}}],  
-            </span>  
-            <br><br>
-            <span  *ngFor="let item of appModel.AppModelItems" >  
-                  <span *ngIf=" item.DataType=='int' ">
-                        CONVERT( NVARCHAR(255) , {{item.Name}} ) [{{item.Name}}],      
-                  </span>
-                  <span *ngIf=" item.DataType != 'int' ">
-                        ISNULL( {{item.Name}} , '' ) [{{item.Name}}],         
-                  </span> 
-            </span>   
-            <br><br>
-            <span  *ngFor="let item of appModel.AppModelItems" >   
-                 CONVERT( NVARCHAR(255) , {{item.Name}} ) [{{item.Name}}],   
-            </span>  
-            <br><br>
-            <br>DECLARE @statement NVARCHAR(4000) = ''
-            <br>SET @statement = ' '
-            <span  *ngFor="let item of appModel.AppModelItems" >
-                  <span *ngIf=" item.DataType=='int' ">  
-                        <br>SET @statement = @statement +  ' DECLARE @{{item.Name}} INT=0 '    
-                  </span> 
-                  <span *ngIf=" item.DataType != 'int' ">
-                        <br>SET @statement = @statement +  ' DECLARE @{{item.Name}} NVARCHAR(4000) '           
-                  </span> 
-            </span> 
-            <br><br>SET @statement = @statement +  ' SELECT '
-            <span  *ngFor="let item of appModel.AppModelItems" >   
-                  <br>SET @statement = @statement + ' CONVERT( NVARCHAR(255) , {{item.Name}} ) [{{item.Name}}],  '  
-            </span> 
-            <br>SET @statement = @statement + ' FROM TBL '
-            <br>EXECUTE sp_executesql @statement
-            <br>
-            <br>DECLARE @TABLENAME NVARCHAR(55) = 'Address'
-            <br>SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME =@TABLENAME
-      </div> 
+        </div> <!-- custom  -->
 </div> 
  
 <br><br><br><br>

@@ -17,12 +17,12 @@ import { stringify } from 'querystring';
 export class CompilerComponent implements OnInit {
     
     public compilation: Compilation = new Compilation(); 
-    public cache: string;   
+    public cache: string;    
     public resultItems:string[] = []; 
-    public commands : string[] = [ 'get:tables', 'get:model', 'load:compilation', 'put:save', 'post:saveas' ]; 
+    public commands : string[] = [ 'get:tables', 'get:model', 'load:appmodelitems', 'load:compilation', 'put:save', 'post:saveas' ]; 
     public complist: ICompilation[]= [] ;
     public compSelected : string='';
-    
+    public TrimWhitespace : boolean; 
     constructor(
         private http: HttpClient , 
         private _InfoSchemaService: InfoSchemaService,    
@@ -34,11 +34,12 @@ export class CompilerComponent implements OnInit {
         this.compilation.AppModel = new AppModel();  
         this.compilation.AppModel.AppModelItems = [ 
             new AppModelItem( 1,'ID', 'int'  ) ,
-            new AppModelItem( 2,'Field2', 'string'  ) ,
-            new AppModelItem( 3,'Field3', 'string'  ) 
+            new AppModelItem( 2,'Field2', 'string'  )  
         ];
         this.compilation.ReplaceTerms='\\n:\\n';
         this.compilation.WrapExpression='$0';
+        this.compilation.ParseLines= ['-:~EXCLUDE','+:.*'].join('\n');
+        this.compilation.CombineFrom="1\n2\n3"; 
 
     }  
     ngOnInit(): void {  
@@ -50,20 +51,32 @@ export class CompilerComponent implements OnInit {
         });  
     }
 
-
+   
     ReCompile(form: NgForm){ 
+        
         let content = this.compilation.CompileFrom; 
+        if(this.compilation.CombineFrom==''){
+            this.compilation.CombineFrom=content;
+        }
         let compiler: ICompiler; 
-        compiler = new FormulaCompile( this.compilation.WrapExpression );
-            content = compiler.compile(content); 
+ 
+        if(this.TrimWhitespace){
+            content = this._CompilersService.TrimWhitespace(content); 
+        }
+        if(this.compilation.ParseLines){
+            content = this.DoLineParse(content); 
+        }      
         compiler = new ReplacementsCompile( this.compilation.ReplaceTerms );
             content = compiler.compile(content); 
         
-        content = this.DoLineParse(content); 
+        compiler = new FormulaCompile( 
+            this.compilation.WrapExpression
+            , this.compilation.CombineFrom );
+            content = compiler.compile(content); 
+        
 
         this.compilation.CompileTo=content;
-    }
-//
+    } 
     DoLineParse(content: string) : string {
         let compiler: ICompiler; 
         if(this.compilation.ParseLines){
@@ -76,7 +89,7 @@ export class CompilerComponent implements OnInit {
                 { 
                     parseType = element.split(':')[0];
                     RegEx = element.split(':')[1] ;      
-                }
+                } 
                 compiler = new LineParseCompile(RegEx, (parseType=='+'));
                 content = compiler.compile(content); 
             }
@@ -96,18 +109,43 @@ export class CompilerComponent implements OnInit {
         this.compilation.CompileFrom='';
         this._InfoSchemaService.GetModel(this.compilation.CommandParams).subscribe(data => { 
             this.compilation.AppModel=data;
-            for (var i = 0; i < this.compilation.AppModel.AppModelItems.length; i++) {   
-                this.compilation.CompileFrom += `${this.compilation.AppModel.AppModelItems[i].Name}\n` 
+            for (var i = 0; i < this.compilation.AppModel.AppModelItems.length; i++) {  
+                if(i>0){
+                    this.compilation.CompileFrom += `\n` ;
+                } 
+                this.compilation.CompileFrom += `${this.compilation.AppModel.AppModelItems[i].Name}` ;
             }    
         });  
     } 
     if(this.compilation.Command=='load:compilation'){ 
-        let id = +this.compSelected;
-        console.log(id);
+        let id = +this.compSelected; 
         this._CompilationService.Get(id).subscribe(data => {  
-            this.compilation=data;   
-        }); 
+            this.compilation=data;    
+            if(this.compilation.CommandParams != ''){
+                this._InfoSchemaService.GetModel(this.compilation.CommandParams).subscribe(data => { 
+                    this.compilation.AppModel=data;   
+                });  
+            }            
+        });  
     }  
+    if(this.compilation.Command=='load:appmodelitems'){ 
+        let items : AppModelItem[] = []; 
+        let arr = this.compilation.CompileFrom.split('\n'); 
+        for (let index = 0; index < arr.length; index++) { 
+            let ami = new AppModelItem();
+            ami.Name = arr[index];
+            ami.DataType='string';
+            if(ami.Name.indexOf('date') >= 0){
+                ami.DataType='date'      
+            }
+            if(index== 0 || ami.Name.indexOf('PK_') >= 0 || ami.Name.indexOf('FK_') >= 0){
+                ami.DataType='int'      
+            }            
+            items.push(ami); 
+        }
+        this.compilation.AppModel.AppModelItems =items;
+    }  
+     
     if(this.compilation.Command=='post:saveas'){
         this._CompilationService.SaveAs(this.compilation).subscribe(data => {  
             this.compilation=data;   

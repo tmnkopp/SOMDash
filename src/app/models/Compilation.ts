@@ -13,7 +13,8 @@ export class Compilation{
         public WrapExpression?:string,
         public ReplaceTerms?:string,
         public ParseLines?:string,
-        public ExcludeLines?:string
+        public ExcludeLines?:string,
+        public CombineFrom?:string
       ){} 
 }//export class
 export interface ICompilation {  
@@ -29,6 +30,7 @@ export interface ICompilation {
     ReplaceTerms?:string;
     ParseLines?:string;
     ExcludeLines?:string;
+    CombineFrom?:string;
 }//export class
 
  

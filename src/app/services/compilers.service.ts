@@ -11,6 +11,14 @@ export class CompilersService {
   getStr(str: string) : string {
     return str; 
   }
+  TrimWhitespace(content: string) : string {
+      let _result:string = ''; 
+    content.split('\n').forEach(function (element, i)  {
+        if(i>0){ _result += '\n'}
+        _result += `${element.trimLeft().trimRight()}`; 
+    });
+    return _result; 
+  }
 
 }
 export interface ICompiler {
@@ -30,24 +38,21 @@ export class LineParseCompile implements ICompiler {
         let lines =  content.split('\n');   
         let ExpressionLines = this._Expressions.split('\n');
         let _return :string = '';   
-
-        
-
+ 
         for (var iLine = 0; iLine < lines.length; iLine++) 
         {       
             let parseType = "";
-            let RegEx = ""; 
-            this._ParseInclude = true;
+            let RegEx = "";  
             let found:boolean = false;
             for (let index = 0; index < ExpressionLines.length; index++) {  
 
                 RegEx=ExpressionLines[index];  
-                let RegExMatch = lines[iLine].match(new RegExp( RegEx ,"g"));  
+                let RegExMatch = lines[iLine].match(new RegExp( RegEx ,"g"));
+                
                 if(RegExMatch!= null){
                     found=true;
                 }   
-            }   
- 
+            }    
             if(found && this._ParseInclude){
                 _return += lines[iLine]+'\n';    
             }
@@ -82,15 +87,28 @@ export class ReplacementsCompile implements ICompiler {
 }
 export class FormulaCompile implements ICompiler {
     private _formula:string = "";
-    constructor(formula: string){ 
+    private _CombineFrom:string = "";
+    constructor(formula: string, CombineFrom: string){ 
         this._formula=formula;
+        this._CombineFrom=CombineFrom; 
+      
     }
+  
     public compile(content: string): string {
-      let lines =  content.split('\n');   
+      let lines =  content.split('\n');
+      
+      if (!this._CombineFrom ){
+        this._CombineFrom=content;
+      } 
+    
+      let CombineFromLines = this._CombineFrom.split('\n'); 
+      
+      let cMax  = CombineFromLines.length ; 
       for (var i = 0; i < lines.length; i++) {   
            
-        lines[i] = `${ this._formula.replace( /\$0/g,  lines[i] ) }` ; 
-        
+        lines[i] = `${ this._formula.replace( /\$0/g,  lines[i] ) }` ;  
+        lines[i] = `${ lines[i].replace( /\$1/g, CombineFromLines[i % cMax] ) }` ; 
+      
         let RegExMatch = lines[i].match(/\$I\+\d*/);
         if(RegExMatch!= null){
             let match=RegExMatch[RegExMatch.length-1];

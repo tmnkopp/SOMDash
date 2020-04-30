@@ -10,12 +10,14 @@ import { AppModelComponent } from './components/app-model/app-model.component';
 import { FindComponent } from './components/find/find.component';
 import { ConstantsService } from './services/constants.service';
 import {CompilationService} from './services/compilation.service';
+import { SqlComponent } from './components/sql/sql.component';
 @NgModule({
   declarations: [
     AppComponent,
     CompilerComponent,
     AppModelComponent,
-    FindComponent
+    FindComponent,
+    SqlComponent
   ],
   imports: [
     BrowserModule,
