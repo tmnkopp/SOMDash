@@ -11,13 +11,15 @@ import { FindComponent } from './components/find/find.component';
 import { ConstantsService } from './services/constants.service';
 import {CompilationService} from './services/compilation.service';
 import { SqlComponent } from './components/sql/sql.component';
+import { ReplaceLineBreaks } from './pipes/replace-line-breaks.pipe';
 @NgModule({
   declarations: [
     AppComponent,
     CompilerComponent,
     AppModelComponent,
     FindComponent,
-    SqlComponent
+    SqlComponent,
+    ReplaceLineBreaks
   ],
   imports: [
     BrowserModule,

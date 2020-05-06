@@ -5,8 +5,8 @@ import { Compilation, ICompilation } from '../../models/Compilation';
 import { AppModel, AppModelItem } from '../../models/AppModel';
 import { InfoSchemaService } from '../../services/info-schema.service';
 import { CompilationService } from '../../services/compilation.service';
-import { CompilersService, FormulaCompile, ReplacementsCompile, LineParseCompile, ICompiler } from '../../services/compilers.service';
 
+import { CompilersService, FormulaCompile, ReplacementsCompile, LineParseCompile, ICompiler } from '../../services/compilers.service'; 
 import { stringify } from 'querystring';
 @Component({
   selector: 'app-compiler',
@@ -18,7 +18,7 @@ export class CompilerComponent implements OnInit {
     
     public compilation: Compilation = new Compilation(); 
     public cache: string;    
-    public resultItems:string[] = []; 
+    
     public commands : string[] = [ 'get:tables', 'get:model', 'load:appmodelitems', 'load:compilation', 'put:save', 'post:saveas' ]; 
     public complist: ICompilation[]= [] ;
     public compSelected : string='';
@@ -27,7 +27,8 @@ export class CompilerComponent implements OnInit {
         private http: HttpClient , 
         private _InfoSchemaService: InfoSchemaService,    
         private _CompilationService: CompilationService , 
-        private _CompilersService: CompilersService  ) 
+        private _CompilersService: CompilersService 
+        ) 
     { 
         this.compilation.Command ='get:model';   
         this.compilation.CommandParams='SOMAPI.Models.CompilerViewModel';  
@@ -36,10 +37,11 @@ export class CompilerComponent implements OnInit {
             new AppModelItem( 1,'ID', 'int'  ) ,
             new AppModelItem( 2,'Field2', 'string'  )  
         ];
+        
         this.compilation.ReplaceTerms='\\n:\\n';
         this.compilation.WrapExpression='$0';
         this.compilation.ParseLines= ['-:~EXCLUDE','+:.*'].join('\n');
-        this.compilation.CombineFrom="1\n2\n3"; 
+        this.compilation.CombineFrom=""; 
 
     }  
     ngOnInit(): void {  
@@ -48,7 +50,8 @@ export class CompilerComponent implements OnInit {
         });  
         this._CompilationService.GetAll().subscribe(data=>{   
             this.complist=data
-        });  
+        });   
+ 
     }
 
    
@@ -72,9 +75,8 @@ export class CompilerComponent implements OnInit {
         compiler = new FormulaCompile( 
             this.compilation.WrapExpression
             , this.compilation.CombineFrom );
-            content = compiler.compile(content); 
-        
-
+        content = compiler.compile(content); 
+         
         this.compilation.CompileTo=content;
     } 
     DoLineParse(content: string) : string {
@@ -106,14 +108,17 @@ export class CompilerComponent implements OnInit {
         this.compilation.ModelName=this.compilation.CommandParams;
     }  
     if(this.compilation.Command=='get:model'){
-        this.compilation.CompileFrom='';
+        this.compilation.CompileFrom=''; 
+        this.compilation.CombineFrom ='';  
         this._InfoSchemaService.GetModel(this.compilation.CommandParams).subscribe(data => { 
             this.compilation.AppModel=data;
             for (var i = 0; i < this.compilation.AppModel.AppModelItems.length; i++) {  
                 if(i>0){
                     this.compilation.CompileFrom += `\n` ;
+                    this.compilation.CombineFrom += `\n` ;
                 } 
                 this.compilation.CompileFrom += `${this.compilation.AppModel.AppModelItems[i].Name}` ;
+                this.compilation.CombineFrom += `${this.compilation.AppModel.AppModelItems[i].DataType}` ;
             }    
         });  
     } 

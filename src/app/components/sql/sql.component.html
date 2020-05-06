@@ -88,6 +88,46 @@
             <br>
             <br> 
             <br><br><br><br><br>
+            <br>DECLARE @SRC NVARCHAR(55) = 'aspnet_Users'
+            <br>IF OBJECT_ID('tempdb..#MTRX') IS NOT NULL DROP TABLE #MTRX
+            <br>CREATE TABLE #MTRX (ROWNUM INT IDENTITY (1, 1) PRIMARY KEY NOT NULL, KY INT, VL NVARCHAR(4000))
+            <br>
+            <br>DECLARE @RowCnt INT = 1
+            <br>INSERT INTO #MTRX (KY,VL)
+            <br>SELECT ORDINAL_POSITION, COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME=@SRC
+            <br>DECLARE @MaxRows INT =(SELECT COUNT(*) FROM #MTRX)
+            <br>WHILE @RowCnt <= @MaxRows
+            <br>BEGIN
+            <br>DECLARE @PKEY INT = (SELECT KY FROM #MTRX WHERE ROWNUM = @RowCnt)
+            <br>DECLARE @VL NVARCHAR(4000) = (SELECT VL FROM #MTRX WHERE ROWNUM = @RowCnt)
+            <br>
+            <br>SELECT @RowCnt = @RowCnt + 1
+            <br>END
+            <br>IF OBJECT_ID('tempdb..#MTRX') IS NOT NULL DROP TABLE #MTRX
+            <br>
+            <br>
+            <br><br><br><br><br>
+
+            <br>  IF OBJECT_ID('tempdb..#MTRX') IS NOT NULL DROP TABLE #MTRX 
+            <br>  CREATE TABLE #MTRX (ROWNUM INT IDENTITY (1, 1) PRIMARY KEY NOT NULL, KY INT, VL NVARCHAR(4000))  
+            <br>  DECLARE @exe NVARCHAR(MAX) = '' 
+            <br>  SET @exe=@exe+' DECLARE @SRC NVARCHAR(55) = ''aspnet_Users'' '  
+            <br>  SET @exe=@exe+' DECLARE @RowCnt INT = 1 '
+            <br>  SET @exe=@exe+' INSERT INTO #MTRX (KY,VL) '
+            <br>  SET @exe=@exe+' SELECT ORDINAL_POSITION, COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME=@SRC '
+            <br>  SET @exe=@exe+' DECLARE @MaxRows INT =(SELECT COUNT(*) FROM #MTRX) '
+            <br>  SET @exe=@exe+' WHILE @RowCnt <= @MaxRows '
+            <br>  SET @exe=@exe+' BEGIN '
+            <br>  SET @exe=@exe+' DECLARE @PKEY INT = (SELECT KY FROM #MTRX WHERE ROWNUM = @RowCnt) '
+            <br>  SET @exe=@exe+' DECLARE @VL NVARCHAR(4000) = (SELECT VL FROM #MTRX WHERE ROWNUM = @RowCnt) ' 
+            <br>  SET @exe=@exe+' SELECT @RowCnt = @RowCnt + 1 '
+            <br>  SET @exe=@exe+' END ' 
+            <br>  EXECUTE sp_executesql @exe  
+            <br>  SELECT KY,VL FROM #MTRX 
+            <br>  IF OBJECT_ID('tempdb..#MTRX') IS NOT NULL DROP TABLE #MTRX 
+             
+
+            <br><br><br><br><br>
             <br> 
             <br>  DECLARE @SRC NVARCHAR(55) = 'aspnet_Users'
             <br>  DECLARE @exe NVARCHAR(MAX) = ''  
@@ -116,8 +156,10 @@
             
         </div>
         <div role="tabpanel" class="tab-pane " id="sql_custom"> 
+            <br> 
+            <br><span [innerHTML]="this.snippet.Body | replaceLineBreaks"></span>
             <br>
-
+            <br>
             <br>DECLARE @TABLENAME NVARCHAR(55) = 'aspnet_Profile'
             <br>SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME =@TABLENAME
             <br>

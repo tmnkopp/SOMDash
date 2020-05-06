@@ -52,7 +52,7 @@ export class LineParseCompile implements ICompiler {
                 if(RegExMatch!= null){
                     found=true;
                 }   
-            }    
+            }     
             if(found && this._ParseInclude){
                 _return += lines[iLine]+'\n';    
             }
@@ -60,7 +60,7 @@ export class LineParseCompile implements ICompiler {
                 _return += lines[iLine]+'\n';    
             }
         } 
-        return _return; 
+        return _return.substr(0,_return.length-1); 
     }
 }
 export class ReplacementsCompile implements ICompiler {
@@ -90,17 +90,13 @@ export class FormulaCompile implements ICompiler {
     private _CombineFrom:string = "";
     constructor(formula: string, CombineFrom: string){ 
         this._formula=formula;
-        this._CombineFrom=CombineFrom; 
-      
-    }
-  
+        this._CombineFrom=CombineFrom;  
+    } 
     public compile(content: string): string {
-      let lines =  content.split('\n');
-      
+      let lines =  content.split('\n'); 
       if (!this._CombineFrom ){
         this._CombineFrom=content;
-      } 
-    
+      }  
       let CombineFromLines = this._CombineFrom.split('\n'); 
       
       let cMax  = CombineFromLines.length ; 

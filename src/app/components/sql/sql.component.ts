@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { AppModel, AppModelItem } from '../../models/AppModel';
+import { AppModel, AppModelItem } from '../../models/AppModel'; 
+import { SnippetService } from '../../services/snippet.service';
+import { Snippet } from '../../models/Snippet';
 @Component({
   selector: '[app-sql]',
   templateUrl: './sql.component.html',
@@ -7,9 +9,16 @@ import { AppModel, AppModelItem } from '../../models/AppModel';
 })
 export class SqlComponent implements OnInit {
     @Input() appModel: AppModel; 
-  constructor() { }
+    public snippet: Snippet ; 
+  constructor(  
+    private _SnippetService: SnippetService) {  
+    }
 
   ngOnInit(): void {
+    this._SnippetService.Get("TSQL").subscribe(data=>{    
+        this.snippet=data; 
+    }); 
+    
   }
 
 }
