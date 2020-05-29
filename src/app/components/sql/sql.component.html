@@ -8,8 +8,20 @@
 </ul> 
  <div class="tab-content app-model-tab-content">
  
-        <div role="tabpanel" class="tab-pane " id="sql_table"> 
-            DECLARE @TMPTBL TABLE(  
+        <div role="tabpanel" class="tab-pane " id="sql_table">  
+            ( 
+            <span  *ngFor="let item of appModel.AppModelItems; let i = index; let c = count" >  
+                {{item.Name}} <span *ngIf="i < c-1;">,</span> 
+            </span> 
+            )
+            <br><br>     
+            DECLARE @TBL TABLE(
+                <span  *ngFor="let item of appModel.AppModelItems; let i = index; let c = count" >  
+                    {{item.Name}} NVARCHAR(999) <span *ngIf="i < c-1;">,</span> 
+                </span> 
+                )
+                <br><br> 
+            DECLARE @TBL TABLE(  
             <span  *ngFor="let item of appModel.AppModelItems; let i = index; let c = count" >  
                 <br>{{item.Name}}  
                 <span  [ngSwitch]="item.DataType">
@@ -23,7 +35,7 @@
             </span> 
             ); 
             <br><br>
-            INSERT INTO  @TMPTBL(  
+            INSERT INTO  @TBL(  
                 <span  *ngFor="let item of appModel.AppModelItems; let i = index; let c = count" >  
                     <br>{{item.Name}} <span *ngIf="i < c-1;">,</span> 
                 </span>  
@@ -44,7 +56,7 @@
                     <span *ngIf=" item.DataType == 'int' "> CONVERT( NVARCHAR(55) , {{item.Name}} ) [{{item.Name}}]  </span>
                     <span *ngIf=" item.DataType != 'int' "> ISNULL( {{item.Name}} , '' ) [{{item.Name}}]  </span><span *ngIf="i < c-1;">,</span> 
                 </span>  
-            <br> FROM @TMPTBL
+            <br> FROM @TBL
             <br><br>
  
             <br><br> 
@@ -156,15 +168,10 @@
             
         </div>
         <div role="tabpanel" class="tab-pane " id="sql_custom"> 
-            <br> 
-            <br><span [innerHTML]="this.snippet.Body | replaceLineBreaks"></span>
-            <br>
-            <br>
+            <br>  
             <br>DECLARE @TABLENAME NVARCHAR(55) = 'aspnet_Profile'
             <br>SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME =@TABLENAME
-            <br>
-            <br><br>
- 
+            <br> 
             <br>
             <br>
 

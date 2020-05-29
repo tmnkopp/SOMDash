@@ -15,9 +15,7 @@ export class SqlComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    this._SnippetService.Get("TSQL").subscribe(data=>{    
-        this.snippet=data; 
-    }); 
+ 
     
   }
 
