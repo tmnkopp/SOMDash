@@ -1,0 +1,44 @@
+<form #f="ngForm" (ngSubmit)="onSubmit(f)">
+    <div class="container-fluid">
+        <div class="row"> 
+            <div class="col-sm-2">
+                <button  type="submit" class="btn btn-primary" value="Execute">Execute</button>
+            </div>
+            <div class="col-sm-10">
+                <select name="command" id="command" [(ngModel)]="command"  >
+                    <option value="0">--</option>
+                    <option *ngFor="let command of commands" value={{command}}>
+                      {{command}}
+                    </option>
+              </select>
+            </div> 
+        </div>
+        <div class="row"> 
+            <div class="col-sm-6">  ModelName
+                <input type="text" class="form-control" id="ModelName" [(ngModel)]="_Scaffold.ModelName" name="ModelName">
+            </div>
+            <div class="col-sm-6">Namespace
+                <input type="text" class="form-control" id="Namespace" [(ngModel)]="_Scaffold.Namespace" name="Namespace">
+            </div> 
+        </div>
+        <div class="row"> 
+            <div class="col-sm-2">
+                Save Destination
+            </div>               
+            <div class="col-sm-10"> 
+                <input type="text" class="form-control" id="SaveDestination" [(ngModel)]="_Scaffold.SaveDestination" name="SaveDestination">
+            </div>             
+        </div>        
+        <div class="row">
+            <div class="col-sm-12">
+                <div  *ngFor="let item of _Scaffold.CodeTemplates; let i = index; let c = count" >  
+                    {{item.Name}}  
+                    <textarea class="full form-control" id="Content"  name="Content">{{item.Content}}</textarea>
+                </div> 
+            </div>
+  
+        </div>
+    </div>     
+</form>
+
+ 

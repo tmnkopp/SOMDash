@@ -12,6 +12,8 @@ import { ConstantsService } from './services/constants.service';
 import {CompilationService} from './services/compilation.service';
 import { SqlComponent } from './components/sql/sql.component';
 import { ReplaceLineBreaks } from './pipes/replace-line-breaks.pipe';
+import { ScaffoldComponent } from './components/scaffold/scaffold.component';
+import { ScaffoldService } from './services/scaffold.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -19,7 +21,8 @@ import { ReplaceLineBreaks } from './pipes/replace-line-breaks.pipe';
     AppModelComponent,
     FindComponent,
     SqlComponent,
-    ReplaceLineBreaks
+    ReplaceLineBreaks,
+    ScaffoldComponent
   ],
   imports: [
     BrowserModule,

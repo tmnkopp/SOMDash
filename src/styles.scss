@@ -76,6 +76,10 @@ body {
         &.sm{
           height:20vh;
         }
+        &.full{
+            height: 80vh;
+            width: 90vw;
+        }
       } 
      
     .form-control, textarea {
