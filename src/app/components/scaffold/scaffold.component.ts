@@ -13,9 +13,7 @@ import { CompilersService, FormulaCompile, ReplacementsCompile, LineParseCompile
   styleUrls: ['./scaffold.component.scss']
 })
 export class ScaffoldComponent implements OnInit {
-    public _Scaffold: Scaffold = new Scaffold();
-    public _CodeTemplate: CodeTemplate = new CodeTemplate(); 
-    public _CodeTemplates: CodeTemplate[] = new Array();
+    public _Scaffold; 
     public commands : string[] = ['get:GetCodeTemplates', 'load:Scaffold', 'save:Scaffold' ]; 
     public command: string='';   
     constructor(
@@ -24,34 +22,36 @@ export class ScaffoldComponent implements OnInit {
         private _CompilersService: CompilersService 
         ) 
     {  
+        this._Scaffold = new Scaffold();
         this._Scaffold.CodeTemplates = new Array();
         this.command='';
     }  
 
     ngOnInit(): void {  
         this._Scaffold.ModelName='{0}';
+        
         this._ScaffoldService.GetScaffold(0).subscribe(data=>{   
             this._Scaffold=data;
-        });   
+        });  
     }
     onSubmit(form: NgForm){   
-        //this._Scaffold.CodeTemplates= new Array(); 
+        this._Scaffold.CodeTemplates= new Array(); 
         //this._Scaffold.ModelName='ModelName';
         //this._Scaffold.Namespace='Namespace'; 
         //this._Scaffold.SaveDestination=''; 
-        if (this.command=='get:GetCodeTemplates') {
+        if (this.command=='get:GetCodeTemplates') { 
             this._ScaffoldService.GetCodeTemplates(this._Scaffold.ModelName, this._Scaffold.Namespace).subscribe(data => {  
-                this._Scaffold.CodeTemplates  = data;    
+                this._Scaffold=data;    
             });
         }
         if (this.command=='load:Scaffold') {
             this._ScaffoldService.Load(this._Scaffold).subscribe(data => {  
-                this._Scaffold = data;    
+                this._Scaffold=data;    
             });  
         }
         if (this.command=='save:Scaffold') {
             this._ScaffoldService.Load(this._Scaffold).subscribe(data => {  
-                this._Scaffold = data;    
+                this._Scaffold=data;    
             });  
         }
   
