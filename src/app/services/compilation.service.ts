@@ -21,6 +21,9 @@ export class CompilationService {
       public Get(id:number): any {   
         return  this._http.get<ICompilation>( `${this.baseApiUrl}Compilation/Get/${id}` )  ; 
       } 
+      public GetSnippets(Filename:string): any {   
+        return  this._http.get<string[]>( `${this.baseApiUrl}Compilation/GetSnippets/${Filename}` )  ; 
+      }  
       public SaveAs (compilation: Compilation): any {   
         return  this._http.post( `${this.baseApiUrl}Compilation/`, compilation )  ; 
       }  

@@ -5,20 +5,26 @@ import { Compilation, ICompilation } from '../../models/Compilation';
 import { AppModel, AppModelItem } from '../../models/AppModel';
 import { InfoSchemaService } from '../../services/info-schema.service';
 import { CompilationService } from '../../services/compilation.service';
-
+import { ReplaceBreaksToBrPipe } from '../../pipes/replace-breaks-to-br.pipe';
+import { SnippetFormaterPipe } from '../../pipes/snippet-formater.pipe';
 import { CompilersService, FormulaCompile, ReplacementsCompile, LineParseCompile, ICompiler } from '../../services/compilers.service'; 
 import { stringify } from 'querystring';
 @Component({
   selector: 'app-compiler',
   templateUrl: './compiler.component.html',
-  styleUrls: ['./compiler.component.scss']
+  styleUrls: ['./compiler.component.scss'],
+  providers: [
+    ReplaceBreaksToBrPipe
+    , SnippetFormaterPipe
+    ]
 })
 
 export class CompilerComponent implements OnInit {
     
     public compilation: Compilation = new Compilation(); 
     public cache: string;    
-    
+    public snippets: string[] = []; 
+
     public commands : string[] = [ 'get:tables', 'get:model', 'load:appmodelitems', 'load:compilation', 'put:save', 'post:saveas' ]; 
     public complist: ICompilation[]= [] ;
     public compSelected : string='';
@@ -27,7 +33,9 @@ export class CompilerComponent implements OnInit {
         private http: HttpClient , 
         private _InfoSchemaService: InfoSchemaService,    
         private _CompilationService: CompilationService , 
-        private _CompilersService: CompilersService 
+        private _CompilersService: CompilersService,
+        private ReplaceBreaksToBr: ReplaceBreaksToBrPipe ,
+        private SnippetFormaterPipe: SnippetFormaterPipe   
         ) 
     { 
         this.compilation.Command ='get:model';   
@@ -50,8 +58,7 @@ export class CompilerComponent implements OnInit {
         });  
         this._CompilationService.GetAll().subscribe(data=>{   
             this.complist=data
-        });   
- 
+        });    
     }
 
    
@@ -78,6 +85,11 @@ export class CompilerComponent implements OnInit {
         content = compiler.compile(content); 
          
         this.compilation.CompileTo=content;
+
+        this._CompilationService.GetSnippets('custom').subscribe(data => {   
+            this.snippets = data ;      
+        });
+
     } 
     DoLineParse(content: string) : string {
         let compiler: ICompiler; 
@@ -161,6 +173,7 @@ export class CompilerComponent implements OnInit {
             this.compilation=data;   
         });  
     }  
+
   
   } 
 }

@@ -88,17 +88,18 @@
                   <div role="tabpanel" class="tab-pane" id="tab_sql"> 
                     <div class="sql" *ngIf="compilation.AppModel" app-sql [appModel]="compilation.AppModel"></div> 
               </div>                   
-                  <div role="tabpanel" class="tab-pane" id="tab_cache"> 
-                    <textarea  class="form-control" id="cache"  name="cache" [(ngModel)]="cache"></textarea>
+                  <div role="tabpanel" class="tab-pane" id="tab_cache">  
+                    <span  class="indent" *ngFor="let snippet of snippets" > 
+                        <span class="indent"  *ngFor="let AppModelItem of compilation.AppModel.AppModelItems" >
+                            <span [outerHTML]="snippet | snippetFormater : AppModelItem.Name"></span>
+                         
+                        </span>  
+                        <br>
+                    </span>                         
                   </div>                   
             </div>  
             </div>
-      </div>
-
-      
-      
-      {{  compilation.AppModel | json }}
-        
+      </div> 
 </form>
 
  

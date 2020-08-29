@@ -13,7 +13,9 @@ import {CompilationService} from './services/compilation.service';
 import { SqlComponent } from './components/sql/sql.component';
 import { ReplaceLineBreaks } from './pipes/replace-line-breaks.pipe';
 import { ScaffoldComponent } from './components/scaffold/scaffold.component';
-import { ScaffoldService } from './services/scaffold.service';
+import { ScaffoldService } from './services/scaffold.service'; 
+import { ReplaceBreaksToBrPipe } from './pipes/replace-breaks-to-br.pipe';
+import { SnippetFormaterPipe } from './pipes/snippet-formater.pipe';
 @NgModule({
   declarations: [
     AppComponent,
@@ -22,7 +24,8 @@ import { ScaffoldService } from './services/scaffold.service';
     FindComponent,
     SqlComponent,
     ReplaceLineBreaks,
-    ScaffoldComponent
+    ScaffoldComponent, 
+    ReplaceBreaksToBrPipe, SnippetFormaterPipe
   ],
   imports: [
     BrowserModule,
