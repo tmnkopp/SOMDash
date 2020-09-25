@@ -86,7 +86,7 @@ export class CompilerComponent implements OnInit {
          
         this.compilation.CompileTo=content;
 
-        this._CompilationService.GetSnippets('custom').subscribe(data => {   
+        this._CompilationService.GetSnippets('ModelSnippets').subscribe(data => {   
             this.snippets = data ;      
         });
 

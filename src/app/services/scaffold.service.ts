@@ -23,6 +23,9 @@ export class ScaffoldService {
       public Load (scaffold: Scaffold): any {    
         return  this._http.post( `${this.baseApiUrl}Scaffold/Load`, scaffold )  ; 
       }    
+      public Save (scaffold: Scaffold): any {    
+        return  this._http.post( `${this.baseApiUrl}Scaffold/Save`, scaffold )  ; 
+      }    
   
          
 }

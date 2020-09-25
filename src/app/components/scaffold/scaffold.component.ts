@@ -39,10 +39,14 @@ export class ScaffoldComponent implements OnInit {
         //this._Scaffold.ModelName='ModelName';
         //this._Scaffold.Namespace='Namespace'; 
         //this._Scaffold.SaveDestination=''; 
+        let SaveDest = this._Scaffold.SaveDestination;
         if (this.command=='get:GetCodeTemplates') { 
             this._ScaffoldService.GetCodeTemplates(this._Scaffold.ModelName, this._Scaffold.Namespace).subscribe(data => {  
                 this._Scaffold=data;    
             });
+            if(SaveDest!= ''){
+                this._Scaffold.SaveDestination=SaveDest;
+            }  
         }
         if (this.command=='load:Scaffold') {
             this._ScaffoldService.Load(this._Scaffold).subscribe(data => {  
@@ -50,7 +54,7 @@ export class ScaffoldComponent implements OnInit {
             });  
         }
         if (this.command=='save:Scaffold') {
-            this._ScaffoldService.Load(this._Scaffold).subscribe(data => {  
+            this._ScaffoldService.Save(this._Scaffold).subscribe(data => {  
                 this._Scaffold=data;    
             });  
         }
