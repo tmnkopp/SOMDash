@@ -54,6 +54,7 @@ export class ScaffoldComponent implements OnInit {
             });  
         }
         if (this.command=='save:Scaffold') {
+            console.log(this._Scaffold.CodeTemplates);
             this._ScaffoldService.Save(this._Scaffold).subscribe(data => {  
                 this._Scaffold=data;    
             });  
