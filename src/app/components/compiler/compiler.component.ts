@@ -47,8 +47,8 @@ export class CompilerComponent implements OnInit {
         ];
         
         this.compilation.ReplaceTerms='\\n:\\n';
-        this.compilation.WrapExpression='$0';
-        this.compilation.ParseLines= ['-:~EXCLUDE','+:.*'].join('\n');
+        this.compilation.WrapExpression='$I+1000 $0 $1 $M5 $I+1';
+        this.compilation.ParseLines= ['-:~regex~','+:.*'].join('\n');
         this.compilation.CombineFrom=""; 
 
     }  

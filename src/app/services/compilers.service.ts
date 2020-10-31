@@ -1,3 +1,4 @@
+import { findLast } from '@angular/compiler/src/directive_resolver';
 import { Injectable } from '@angular/core';
 import { stringify } from 'querystring';
 
@@ -38,17 +39,18 @@ export class LineParseCompile implements ICompiler {
         let lines =  content.split('\n');   
         let ExpressionLines = this._Expressions.split('\n');
         let _return :string = '';   
- 
+
         for (var iLine = 0; iLine < lines.length; iLine++) 
         {       
+            
             let parseType = "";
             let RegEx = "";  
             let found:boolean = false;
             for (let index = 0; index < ExpressionLines.length; index++) {  
 
-                RegEx=ExpressionLines[index];  
-                let RegExMatch = lines[iLine].match(new RegExp( RegEx ,"g"));
-                
+                RegEx=ExpressionLines[index];   
+                let RegExMatch = lines[iLine].match(new RegExp( RegEx ,"g")); 
+  
                 if(RegExMatch!= null){
                     found=true;
                 }   
@@ -104,14 +106,17 @@ export class FormulaCompile implements ICompiler {
            
         lines[i] = `${ this._formula.replace( /\$0/g,  lines[i] ) }` ;  
         lines[i] = `${ lines[i].replace( /\$1/g, CombineFromLines[i % cMax] ) }` ; 
-      
-        let RegExMatch = lines[i].match(/\$I\+\d*/);
+        
+        let RegExMatch = lines[i].match(/\$I\+\d*/g); 
         if(RegExMatch!= null){
-            let match=RegExMatch[RegExMatch.length-1];
-            let increment = +match.split('+')[1]; 
-            lines[i] = `${lines[i].replace (match, (i + increment).toString() )}`; 
-        } 
+            for(let m=0; m<RegExMatch.length; m++){
+                let match=RegExMatch[m];
+                let increment = +match.split('+')[1]; 
+                lines[i] = `${lines[i].replace (match, (i + increment).toString() )}`; 
+            } 
+        }  
 
+ 
         RegExMatch = lines[i].match(/\$M\d*/);
         if(RegExMatch!= null){
             let match=RegExMatch[RegExMatch.length-1];
