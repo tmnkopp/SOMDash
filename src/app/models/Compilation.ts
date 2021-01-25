@@ -14,7 +14,8 @@ export class Compilation{
         public ReplaceTerms?:string,
         public ParseLines?:string,
         public ExcludeLines?:string,
-        public CombineFrom?:string
+        public CombineFrom?:string,
+        public ControlType?:string
       ){} 
 }//export class
 export interface ICompilation {  
@@ -31,7 +32,8 @@ export interface ICompilation {
     ParseLines?:string;
     ExcludeLines?:string;
     CombineFrom?:string;
+    ControlType?:string;
 }//export class
-
+ 
  
     

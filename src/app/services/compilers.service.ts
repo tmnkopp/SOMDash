@@ -90,23 +90,31 @@ export class ReplacementsCompile implements ICompiler {
 export class FormulaCompile implements ICompiler {
     private _formula:string = "";
     private _CombineFrom:string = "";
-    constructor(formula: string, CombineFrom: string){ 
+    private _ControlType:string = "";
+    constructor(formula: string, CombineFrom: string, ControlType: string){ 
         this._formula=formula;
         this._CombineFrom=CombineFrom;  
+        this._ControlType=ControlType;  
     } 
     public compile(content: string): string {
       let lines =  content.split('\n'); 
       if (!this._CombineFrom ){
         this._CombineFrom=content;
       }  
+      if (!this._ControlType ){
+        this._ControlType=content;
+      }        
       let CombineFromLines = this._CombineFrom.split('\n'); 
+      let ControlTypeLines = this._ControlType.split('\n'); 
       
       let cMax  = CombineFromLines.length ; 
+      let cMax1  = ControlTypeLines.length ; 
       for (var i = 0; i < lines.length; i++) {   
            
         lines[i] = `${ this._formula.replace( /\$0/g,  lines[i] ) }` ;  
         lines[i] = `${ lines[i].replace( /\$1/g, CombineFromLines[i % cMax] ) }` ; 
-        
+        lines[i] = `${ lines[i].replace( /\$2/g, ControlTypeLines[i % cMax] ) }` ;
+
         let RegExMatch = lines[i].match(/\$I\+\d*/g); 
         if(RegExMatch!= null){
             for(let m=0; m<RegExMatch.length; m++){

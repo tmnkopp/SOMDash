@@ -9,6 +9,7 @@ export class AppModelItem{
       constructor(
             public AppModelItemId?:number, 
             public Name?:string,
-            public DataType?:string
+            public DataType?:string,
+            public ControlType?:string
       ){} 
-}//export class
+}//export class 

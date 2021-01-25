@@ -1,51 +1,54 @@
-
+#CompileTo{
+    font-size:14px; 
+    height:370vh;
+}
 .panel-container {
       display: flex;
       flex-direction: row;
       border: 0px solid silver;
       overflow: hidden; 
-      height:100vh;
+      height:50vh;
       textarea{
             width:100%;
             height:70vh;
       }
+      #templatePanel,  .tab-content, #wrap {
+          height: 90%;
+      }
       .panel-right  .tab-content textarea { 
-        height:25%; 
-        font-size:24px; 
-        &#CompileTo{
-            font-size:14px; 
-            height:70vh;
-        }
+        height:90%; 
+        font-size:24px;  
       } 
       
+}
+
+.panel-left , .splitter, .panel-right {
+    min-height: 60vh;
+}
+.panel-left {
+    flex: 0 0 auto;
+    /* only manually resize */
+    padding: 10px;
+    width: 40vw;  
+    white-space: nowrap; 
+    textarea{ 
+    height:70vh;
     }
-    .panel-left , .splitter, .panel-right {
-      min-height: 60vh;
-    }
-    .panel-left {
-      flex: 0 0 auto;
-      /* only manually resize */
-      padding: 10px;
-      width: 40vw;  
-      white-space: nowrap; 
-      textarea{ 
-        height:70vh;
-        }
-    }
+}
     
-    .splitter {
-      flex: 0 0 auto;
-      width: 6px;  
-      background: url(https://raw.githubusercontent.com/RickStrahl/jquery-resizable/master/assets/vsizegrip.png) center center no-repeat #535353; 
-      cursor: col-resize;  
-    } 
-    .panel-right {
-      flex: 1 1 auto;
-      /* resizable */
-      padding: 10px;
-      width: 100%;
-      min-width: 200px; 
-    }
-    .appmodels{
-      padding:1em 2em; 
-    } 
+.splitter {
+    flex: 0 0 auto;
+    width: 6px;  
+    background: url(https://raw.githubusercontent.com/RickStrahl/jquery-resizable/master/assets/vsizegrip.png) center center no-repeat #535353; 
+    cursor: col-resize;  
+} 
+.panel-right {
+    flex: 1 1 auto;
+    /* resizable */
+    padding: 10px;
+    width: 100%;
+    min-width: 200px; 
+}
+.appmodels{
+    padding:1em 2em; 
+} 

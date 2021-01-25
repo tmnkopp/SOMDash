@@ -39,7 +39,7 @@ export class CompilerComponent implements OnInit {
         ) 
     { 
         this.compilation.Command ='get:model';   
-        this.compilation.CommandParams='SOMAPI.Models.CompilerViewModel';  
+        this.compilation.CommandParams='vwSchemaAssessment';  
         this.compilation.AppModel = new AppModel();  
         this.compilation.AppModel.AppModelItems = [ 
             new AppModelItem( 1,'ID', 'int'  ) ,
@@ -47,7 +47,7 @@ export class CompilerComponent implements OnInit {
         ];
         
         this.compilation.ReplaceTerms='\\n:\\n';
-        this.compilation.WrapExpression='$I+1000 $0 $1 $M5 $I+1';
+        this.compilation.WrapExpression='$I+1000 $0 $1 $2 $M5 $I+1';
         this.compilation.ParseLines= ['-:~regex~','+:.*'].join('\n');
         this.compilation.CombineFrom=""; 
 
@@ -81,7 +81,8 @@ export class CompilerComponent implements OnInit {
         
         compiler = new FormulaCompile( 
             this.compilation.WrapExpression
-            , this.compilation.CombineFrom );
+            , this.compilation.CombineFrom
+            , this.compilation.ControlType  );
         content = compiler.compile(content); 
          
         this.compilation.CompileTo=content;
@@ -122,15 +123,18 @@ export class CompilerComponent implements OnInit {
     if(this.compilation.Command=='get:model'){
         this.compilation.CompileFrom=''; 
         this.compilation.CombineFrom ='';  
+        this.compilation.ControlType=''; 
         this._InfoSchemaService.GetModel(this.compilation.CommandParams).subscribe(data => { 
             this.compilation.AppModel=data;
             for (var i = 0; i < this.compilation.AppModel.AppModelItems.length; i++) {  
                 if(i>0){
                     this.compilation.CompileFrom += `\n` ;
                     this.compilation.CombineFrom += `\n` ;
+                    this.compilation.ControlType += `\n` ;
                 } 
                 this.compilation.CompileFrom += `${this.compilation.AppModel.AppModelItems[i].Name}` ;
                 this.compilation.CombineFrom += `${this.compilation.AppModel.AppModelItems[i].DataType}` ;
+                this.compilation.ControlType += `${this.compilation.AppModel.AppModelItems[i].ControlType}` ;
             }    
         });  
     } 
@@ -160,7 +164,8 @@ export class CompilerComponent implements OnInit {
             }            
             items.push(ami); 
         }
-        this.compilation.AppModel.AppModelItems =items;
+        this.compilation.AppModel.AppModelItems = items;
+        console.log('AppModelItems loaded');      
     }  
      
     if(this.compilation.Command=='post:saveas'){
