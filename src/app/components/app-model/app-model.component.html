@@ -1,91 +1,11 @@
-<ul class="nav nav-tabs" role="tablist">
-
-    <li role="presentation" class="active"><a href="#csharp" aria-controls="csharp" role="tab" data-toggle="tab">csharp</a></li> 
-    <li role="presentation" ><a href="#typescript" aria-controls="typescript" role="tab" data-toggle="tab">typescript</a></li> 
-    <li role="presentation" ><a href="#formitems" aria-controls="formitems" role="tab" data-toggle="tab">formitems</a></li> 
  
-    <li role="presentation" ><a href="#custom" aria-controls="custom" role="tab" data-toggle="tab">custom</a></li>   
-</ul> 
- <div class="tab-content app-model-tab-content">
-    <div role="tabpanel" class="tab-pane active" id="csharp">
-                public class {{appModel.ModelName}}&#123;<br> 
-                    <span class="indent" *ngFor="let item of appModel.AppModelItems" >
-                            <span  [ngSwitch]="item.DataType">
-                                <span *ngSwitchCase="'uniqueidentifier'">
-                                        public int {{item.Name}} &#123; get; set; &#125; 
-                                </span> 
-                                <span *ngSwitchCase="'int'">
-                                        public int {{item.Name}} &#123; get; set; &#125; 
-                                </span>                         
-                                <span *ngSwitchDefault>
-                                        public string {{item.Name}} &#123; get; set; &#125; 
-                                </span>
-                            </span>
-                            <br>
-                    </span>   
-                &#125;  
-        
-    </div> 
-    <div role="tabpanel" class="tab-pane " id="typescript">
-            <br>  <br>  <br> 
-                        export class {{appModel.ModelName}}&#123;<br>
-                        constructor(<br>
-                              <span class="indent" *ngFor="let item of appModel.AppModelItems" >
-                                    <span  [ngSwitch]="item.DataType">
-                                          <span *ngSwitchCase="'uniqueidentifier'">
-                                                public {{item.Name}}?:number, 
-                                          </span> 
-                                          <span *ngSwitchCase="'int'">
-                                                public {{item.Name}}?:number, 
-                                          </span>                         
-                                          <span *ngSwitchDefault>
-                                                public {{item.Name}}?:string,
-                                          </span>
-                                    </span>
-                                    <br>
-                              </span>   
-                        )&#123;&#125;  
-                  <br> &#125; <br>
-            <br>  <br>  <br> 
-                  export interface I{{appModel.ModelName}}&#123;<br>
-                  
-                        <span  class="indent" *ngFor="let item of appModel.AppModelItems" >
-                              <span  [ngSwitch]="item.DataType">
-                                    <span *ngSwitchCase="'uniqueidentifier'">
-                                          public {{item.Name}}?:number; 
-                                    </span> 
-                                    <span *ngSwitchCase="'int'">
-                                          public {{item.Name}}?:number; 
-                                    </span>                         
-                                    <span *ngSwitchDefault>
-                                          public {{item.Name}}?:string;
-                                    </span>
-                              </span>
-                              <br>
-                        </span>    
-                  <br> &#125; <br> 
-      </div>
-      <div role="tabpanel" class="tab-pane " id="formitems">
- 
-            <span  class="indent" *ngFor="let item of appModel.AppModelItems" >
-                <span  [ngSwitch]="item.DataType">
-                        <span *ngSwitchCase="'uniqueidentifier'">
-                            &lt;input type="text" class="form-control" id="{{item.Name}}" name="{{item.Name}}" /&gt;
-                        </span> 
-                        <span *ngSwitchCase="'int'">
-                            &lt;input type="text" class="form-control" id="{{item.Name}}" name="{{item.Name}}" /&gt; 
-                        </span>                         
-                        <span *ngSwitchDefault>
-                            &lt;input type="text" class="form-control" id="{{item.Name}}" name="{{item.Name}}" /&gt;
-                        </span>
-                </span>
-                <br>
-            </span>     
-      </div>
-       
-        <div role="tabpanel" class="tab-pane " id="custom"> 
-
-        </div> <!-- custom  -->
-</div> 
- 
+ <div class=" ">
+    <span class="" *ngFor="let item of appModel.AppModelItems" >
+        {{item.Name}},
+    </span>
+    <br><br>
+    <span class="" *ngFor="let item of appModel.AppModelItems" >
+        <br>{{item.Name}},
+    </span>     
+</div>  
 <br><br><br><br>
