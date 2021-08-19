@@ -12,14 +12,11 @@ Copy-Item -Path ($releaseto + "*config" ) -Destination ($temp)
 Copy-Item -Path ($releaseto + "*appsettings*" ) -Destination ($temp) 
 
 $HasFiles = Test-Path -Path $releasefrom*
- 
-
+  
 if( $HasFiles )
 {
     Remove-item ( $releaseto + "*" ) -recurse -force
     Copy-Item   -Path ($releasefrom + "*") -Destination (  $releaseto ) -recurse  -force
     Copy-Item   -Path ($temp + "*") -Destination (  $releaseto ) -recurse  -force 
 
-}
-
- 
+} 
