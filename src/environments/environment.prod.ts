@@ -3,3 +3,4 @@ export const environment = {
   baseApiUrl: 'http://somapi/api/'
 };
 console.log('prod'); 
+//ng build --configuration=production

@@ -1,3 +1,7 @@
+# ng build --configuration=production
+cd C:\Users\Tim\source\repos\somuing\
+ng build --configuration=production
+
 $base = 'C:\inetpub\wwwroot\'
 $builds = $base + 'builds\' 
 $releasefrom = "C:\Users\Tim\source\repos\somuing\dist\somuing\"

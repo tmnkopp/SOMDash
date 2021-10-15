@@ -7,7 +7,7 @@ export const environment = {
   baseApiUrl: 'http://localhost:4000/api/' 
 };
 
-console.log('dev'); 
+console.log('dev //ng build --configuration=production'); 
     
 /*
  * For easier debugging in development mode, you can import the following file
