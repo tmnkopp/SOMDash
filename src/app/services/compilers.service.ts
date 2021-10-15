@@ -36,6 +36,9 @@ export class LineParseCompile implements ICompiler {
         if(!this._Expressions){
             return content; 
         }
+        if(content==''){
+            return content; 
+        }
         let lines =  content.split('\n');   
         let ExpressionLines = this._Expressions.split('\n');
         let _return :string = '';   

@@ -47,6 +47,7 @@ export class CompilerComponent implements OnInit {
         ];
         
         this.compilation.ReplaceTerms='\\n:\\n';
+        this.compilation.PostReplaceTerms='\\n:\\n';
         this.compilation.WrapExpression='$I+1000 $0 $1 $2 $M5 $I+1';
         this.compilation.ParseLines= ['-:~regex~','+:.*'].join('\n');
         this.compilation.CombineFrom=""; 
@@ -77,14 +78,20 @@ export class CompilerComponent implements OnInit {
             content = this.DoLineParse(content); 
         }      
         compiler = new ReplacementsCompile( this.compilation.ReplaceTerms );
-            content = compiler.compile(content); 
+        content = compiler.compile(content); 
         
         compiler = new FormulaCompile( 
             this.compilation.WrapExpression
             , this.compilation.CombineFrom
             , this.compilation.ControlType  );
         content = compiler.compile(content); 
-         
+        
+        if (this.compilation.PostReplaceTerms != '') {
+            compiler = new ReplacementsCompile( this.compilation.PostReplaceTerms );
+            content = compiler.compile(content); 
+        }
+
+ 
         this.compilation.CompileTo=content;
 
         this._CompilationService.GetSnippets('ModelSnippets').subscribe(data => {   

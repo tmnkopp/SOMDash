@@ -53,7 +53,7 @@
                         <li role="presentation" class="active"><a href="#wrap" (click)="ReCompile(f)" aria-controls="wrap" role="tab" data-toggle="tab">Wrap</a></li>
                         <li role="presentation"><a href="#remove" aria-controls="remove" role="tab" data-toggle="tab">Replace</a></li> 
                         <li role="presentation"><a href="#lineParseTab" aria-controls="lineParseTab" role="tab" data-toggle="tab">Line Parse</a></li> 
- 
+                        <li role="presentation"><a href="#compiled_replace" aria-controls="compiled_replace" role="tab" data-toggle="tab">CompileTo Replace</a></li> 
                     </ul> 
                   <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="wrap">
@@ -73,6 +73,12 @@
                                 Regex Cheatsheet
                             </a>
                       </div> 
+                      <div role="tabpanel" class="tab-pane" id="compiled_replace">
+                        <textarea (blur)="ReCompile(f)"  class="form-control sm" id="PostReplaceTerms" 
+                        [(ngModel)]="compilation.PostReplaceTerms" name="PostReplaceTerms"> </textarea>
+                      </div> 
+
+                      
                   </div>  
                 </div> 
  
