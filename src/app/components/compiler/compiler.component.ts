@@ -39,7 +39,7 @@ export class CompilerComponent implements OnInit {
         ) 
     { 
         this.compilation.Command ='get:model';   
-        this.compilation.CommandParams='vwSchemaAssessment';  
+        this.compilation.CommandParams='EinsteinPublicIP';  
         this.compilation.AppModel = new AppModel();  
         this.compilation.AppModel.AppModelItems = [ 
             new AppModelItem( 1,'ID', 'int'  ) ,
