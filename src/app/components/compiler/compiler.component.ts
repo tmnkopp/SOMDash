@@ -162,7 +162,7 @@ export class CompilerComponent implements OnInit {
         for (let index = 0; index < arr.length; index++) { 
             let ami = new AppModelItem();
             ami.Name = arr[index];
-            ami.DataType='string';
+            ami.DataType='string'; 
             if(ami.Name.indexOf('date') >= 0){
                 ami.DataType='date'      
             }

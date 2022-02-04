@@ -104,10 +104,10 @@
                 <div role="tabpanel" class="tab-pane" id="tab_cache">  
                     <span  class="indent" *ngFor="let snippet of snippets" > 
                         <span class="indent"  *ngFor="let AppModelItem of compilation.AppModel.AppModelItems" >
-                            <span [outerHTML]="snippet | snippetFormater : AppModelItem.Name: AppModelItem.DataType : AppModelItem.ControlType"></span>
-                        
-                        </span>  
-                        <br>
+                            <span [outerHTML]="snippet | snippetFormater : AppModelItem.Name: AppModelItem.DataType : AppModelItem.ControlType"></span> 
+                        </span> 
+                        <br><span *ngFor="let AppModelItem of compilation.AppModel.AppModelItems" ><span [outerHTML]="snippet | snippetFormater : AppModelItem.Name: AppModelItem.DataType : AppModelItem.ControlType : false"></span></span>  
+                        <br><br>
                     </span>                         
                 </div>                   
             </div>  
